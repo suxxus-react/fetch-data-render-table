@@ -1,8 +1,5 @@
-# fetch-data-render-table
+# reactJS fetching + rendering
 **exercise, react + typesript**
-
-
-### reactJS fetching + rendering
 
 Fetch and render the deliveries in the table sorted by tatus and eta ascendant.
 
