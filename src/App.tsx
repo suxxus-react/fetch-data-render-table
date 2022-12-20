@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { getDeliveries, Delivery } from "./network";
 import { Dna } from "react-loader-spinner";
+import classNames from "classnames";
 
 function sortDelivery(list: Delivery[]): Delivery[] {
   return ["active", "upcoming", "pending"]
@@ -16,7 +17,12 @@ function sortDelivery(list: Delivery[]): Delivery[] {
 function App() {
   //
   const [delivery, setDelivery] = useState<Delivery[]>([]);
-  const isVisible = delivery.length > 0;
+  const hasData = delivery.length > 0;
+
+  const showTableClass = classNames({
+    hidden: !hasData,
+    "fade-in-table": hasData,
+  });
 
   useEffect(() => {
     const fetchDeliveries = async () => {
@@ -29,38 +35,36 @@ function App() {
 
   return (
     <div className="App">
-      {isVisible ? (
-        <table className="fade-in-table">
-          <thead>
-            <tr>
-              <td>id</td>
-              <td>Name</td>
-              <td>Amount</td>
-              <td>Status</td>
-              <td>Eta</td>
+      <table className={showTableClass}>
+        <thead>
+          <tr>
+            <td>id</td>
+            <td>Name</td>
+            <td>Amount</td>
+            <td>Status</td>
+            <td>Eta</td>
+          </tr>
+        </thead>
+        <tbody>
+          {delivery.map((o) => (
+            <tr key={`id_${o.id}`}>
+              <td>{o.id}</td>
+              <td>{o.name}</td>
+              <td>{o.amount}</td>
+              <td>{o.status}</td>
+              <td>{o?.eta || ""}</td>
             </tr>
-          </thead>
-          <tbody>
-            {delivery.map((o) => (
-              <tr key={`id_${o.id}`}>
-                <td>{o.id}</td>
-                <td>{o.name}</td>
-                <td>{o.amount}</td>
-                <td>{o.status}</td>
-                <td>{o?.eta || ""}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <Dna
-          height="80"
-          width="80"
-          ariaLabel="dna-loading"
-          wrapperStyle={{}}
-          wrapperClass="dna-wrapper"
-        />
-      )}
+          ))}
+        </tbody>
+      </table>
+      <Dna
+        visible={!hasData}
+        height="80"
+        width="80"
+        ariaLabel="dna-loading"
+        wrapperStyle={{}}
+        wrapperClass="dna-wrapper"
+      />
     </div>
   );
 }

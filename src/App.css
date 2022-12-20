@@ -42,6 +42,10 @@ table tbody tr.active-row {
   color: #009879;
 }
 
+.hidden {
+  display: none;
+}
+
 .fade-in-table {
   animation: fadeIn 5s;
 }
